@@ -42,3 +42,9 @@
   background-color: #282c34;
   color: white;
 } */
+
+
+.cssDirectives{
+  @apply inline-block p-1   m-1   text-center;
+  background-color: rgb(48, 53, 64);
+}
