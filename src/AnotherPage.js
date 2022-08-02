@@ -5,3 +5,4 @@ export default function AnotherPage() {
     <div>well, this is just another page</div>
   )
 }
+ 
