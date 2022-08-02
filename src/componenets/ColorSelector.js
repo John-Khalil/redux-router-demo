@@ -10,7 +10,7 @@ export default function ColorSelector() {
 
     const dispatch=useDispatch();
 
-    const [color,colrAdjust]=useState("red");
+    const [color,colorAdjust]=useState("red");
 
     // const finalColor=useSelector(state=>state.colorPalette.value);
 
@@ -22,7 +22,7 @@ export default function ColorSelector() {
         <>
             <br/><br/>
             <input className="felx  w-1/6 rounded-lg text-center mx-5 inline-block" style={{color:"black"}} type="text" onChange={event=>{
-                colrAdjust(event.target.value);
+                colorAdjust(event.target.value);
             }}/>
             <button className="felx  w-1/6 rounded-lg text-center mx-5 inline-block" style={{backgroundColor:color}} onClick={()=>{
                 dispatch(finalColor(color));
