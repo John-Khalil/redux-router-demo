@@ -21,7 +21,7 @@ export default function ColorSelector() {
     return (
         <>
             <br/><br/>
-            <input className="felx  w-1/6 rounded-lg text-center mx-5 inline-block" style={{color:"black"}} type="text" onChange={event=>{
+            <input className="felx  w-1/6 rounded-lg text-center mx-5 inline-block" style={{color:"black"}} placeholder="example #56F478" type="text" onChange={event=>{
                 colorAdjust(event.target.value);
             }}/>
             <button className="felx  w-1/6 rounded-lg text-center mx-5 inline-block" style={{backgroundColor:color}} onClick={()=>{
