@@ -20,6 +20,7 @@ export default function App() {
       {/* i know this isnt the best practice to comment code but this is for demonestrating purpose  */}
       <Routes>
         <Route path='/' element={<Layout/>}>
+        <Route index element={<MainApp />} />
           <Route path="home" element={<MainApp />} />
           <Route path="another-page" element={<AnotherPage />} />
           <Route path="*" element={<MainApp />} />
