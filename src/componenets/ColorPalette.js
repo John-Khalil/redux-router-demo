@@ -16,3 +16,9 @@ export default function ColorPalette() {
         <div className="felx  w-1/2 rounded-lg text-center" style={{backgroundColor:finalColor}}>ColorPalette</div>
     )
 }
+
+
+// questions i have 
+
+// 1 what does the ... in tailwind class do 
+// 2 how to pass a default value for the reducers outside the files they were defined in 
