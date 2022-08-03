@@ -62,7 +62,7 @@ export default function AnotherPage() {
     
     return (
         <>  
-            <button className='bg-black' onClick={()=>{
+            <button className='bg-green-700 rounded-lg px-1' onClick={()=>{
                 axios.get("https://jsonplaceholder.typicode.com/todos")         // handling a promise
                 .then(getResponse=>{ 
                     updateListOfObjects(getResponse.data);
