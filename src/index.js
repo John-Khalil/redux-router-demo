@@ -3,13 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-
 import colorPaletteReducer from "./reduxReducers/colorPalette";
-
 
 const store = configureStore({
   reducer:{

@@ -17,4 +17,4 @@ export const { finalColor } = sliceObject.actions;
 export default sliceObject.reducer;
 
 
-// this is a boiler plate code that should remain somewhat unchanged
+// this is a boilerplate code that should remain somewhat unchanged
