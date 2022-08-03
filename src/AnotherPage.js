@@ -1,11 +1,11 @@
 import React ,{useState} from 'react'
-
+import axios from 'axios';
 
 export function PerObjectTable({renderObject}){                             // the power of reusable components
     var listAllItems=[];
     var objectAttributeCount=Object.keys(renderObject||{}).length;          // calculate it once so it would be quicker
     Object.keys(renderObject||{}).forEach(element=>{
-        listAllItems.push(<div className='cssDirectives' style={{width:`${Math.ceil((1/(objectAttributeCount+1))*100)}%`}}> {renderObject[element] }</div>);     
+        listAllItems.push(<div className='cssDirectives' style={{width:`${Math.ceil((1/(objectAttributeCount+1))*100)}%`}}> { renderObject[element].toString() }</div>);     
         // this cannot be undefined cause the key wouldnt exist at this point
         // (1/(objectAttributeCount+1)) '1' was added to the dem to make sure that they display inline cause we have to make room for margins and padding etc
     });
@@ -18,7 +18,7 @@ export function PerObjectTable({renderObject}){                             // t
 
 export function ListInTable({arrayOfObjects}){                              // here we're assuming that all the objects inside the array have the same attributes
     var tableFirstRow={};                                                   // just a super empty object
-    Object.keys((arrayOfObjects||{})[0]||{}).forEach(element=>{
+    Object.keys((arrayOfObjects||{})[0]||{}).forEach(element=>{             // this should just return an array of all the keys represented in the object
         tableFirstRow[element]=element;                                     // creating an object listing all the key names
     });
     var listAllItems=[];
@@ -40,37 +40,37 @@ export default function AnotherPage() {
 
     var testObjectList=[
         {
-            name:'john',
+            name:'test',
             age:21
         },
         {
-            name:'john',
+            name:'test',
             age:21
         },
         {
-            name:'john',
+            name:'test',
             age:21
         },
         {
-            name:'john',
+            name:'test',
             age:21
         },
 
     ];
 
-    const [listOfObjects,updateListOfObjects]=useState();
+    const [listOfObjects,updateListOfObjects]=useState(testObjectList);
     
     return (
         <>  
-        
-            <button onClick={()=>{
-                updateListOfObjects(testObjectList);
-            }}>test to see if it works</button>    
-
-            <ListInTable arrayOfObjects={listOfObjects}/>
-
-
-            
+            <button className='bg-black' onClick={()=>{
+                axios.get("https://jsonplaceholder.typicode.com/todos")         // handling a promise
+                .then(getResponse=>{ 
+                    updateListOfObjects(getResponse.data);
+                }).catch(error=>{                                               // catching exceptions from promise
+                    console.error(error);
+                });
+            }}>click me</button>    
+            <ListInTable arrayOfObjects={listOfObjects}/> 
         </>
     )
 }
