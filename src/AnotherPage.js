@@ -92,7 +92,9 @@ export default function AnotherPage() {
     return (
         <>  
             {!isTodosLoaded ?  <Spinner/> :   <RenderTable todos={todos}/> }
-
+            {/*
+                I have some comment here
+            */}
         </>
     )
 }
