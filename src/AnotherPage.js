@@ -95,6 +95,8 @@ export default function AnotherPage() {
             {/*
                 I have some comment here
             */}
+            {/* new thing added */}
+
         </>
     )
 }
