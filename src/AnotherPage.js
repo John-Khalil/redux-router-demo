@@ -1,65 +1,43 @@
 import React ,{useState,useEffect} from 'react'
-import axios from 'axios';
-import loadingGif from "./gifs/loading.gif"
-
-/*export function PerObjectTable({renderObject}){                             // the power of reusable components
-    var listAllItems=[];
-    var objectAttributeCount=Object.keys(renderObject||{}).length;          // calculate it once so it would be quicker
-    Object.keys(renderObject||{}).forEach(element=>{
-        listAllItems.push(<div className='cssDirectives' style={{width:`${Math.ceil((1/(objectAttributeCount+1))*100)}%`}}> { renderObject[element].toString() }</div>);     
-        // this cannot be undefined cause the key wouldnt exist at this point
-        // (1/(objectAttributeCount+1)) '1' was added to the dem to make sure that they display inline cause we have to make room for margins and padding etc
-    });
-    return(
-        <div>
-            {listAllItems}
-        </div>
-    );
-}*/
+import axios from 'axios'
 
 
-/*export function ListInTable({arrayOfObjects}){                              // here we're assuming that all the objects inside the array have the same attributes
-    var tableFirstRow={};                                                   // just a super empty object
-    Object.keys((arrayOfObjects||{})[0]||{}).forEach(element=>{             // this should just return an array of all the keys represented in the object
-        tableFirstRow[element]=element;                                     // creating an object listing all the key names
-    });
 
-    var listAllItems=[];
-    var finalArrayOfObjects=[tableFirstRow];
-    finalArrayOfObjects.concat(arrayOfObjects).forEach(element=>{
-        listAllItems.push(<PerObjectTable renderObject={element}/>)
-    });
-    return(
-        <>
-            {listAllItems}
-        </>
-    );
-}*/
+function Spinner(){
+    return (
+<div className={"w-full flex justify-center items-center"}>
+    <div role="status">
+        <svg aria-hidden="true" className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"/>
+            <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"/>
+        </svg>
+        <span className="sr-only">Loading...</span>
+    </div>
+</div>
 
 
-export function RenderTable({todos}){
 
-    if(todos==="")
-        return(
-            <>
-                <img src={loadingGif} alt="" style={{width:'25px'}}/>
-                <p>sorry i didnt find any other gif without a background </p>
-                <p> it would have been much better if it was at the center !!</p>
-            </>
-        );
 
-    const getBadge =(isCompleted)=>{
-        if (typeof (isCompleted) === "boolean"){
-            if (isCompleted)
-                return (<div className={"p-1 text-sm rounded-full mx-2 bg-green-50 text-green-500 border border-green-500"}> Completed </div>)
-            else
-                return (<div className={"p-1 text-sm rounded-full mx-2 bg-red-50 text-red-500 border border-red-500"}>Not Completed</div>)
+    )
+}
+
+function RenderTable({todos}){
+    if (todos.length !== 0 ){
+        const getBadge =(isCompleted)=>{
+            if (typeof (isCompleted) === "boolean"){
+                if (isCompleted)
+                    return (<div className={"p-1 text-sm rounded-full mx-2 bg-green-50 text-green-500 border border-green-500"}> Completed </div>)
+                else
+                    return (<div className={"p-1 text-sm rounded-full mx-2 bg-red-50 text-red-500 border border-red-500"}>Not Completed</div>)
+            }
+            return isCompleted
         }
-       return isCompleted
-    }
-
-
-    return(
+        return(
         <table className="table-auto">
             <thead>
             <tr className={"border border-b"}>
@@ -77,39 +55,30 @@ export function RenderTable({todos}){
             </tbody>
         </table>
     );
+
+    }
+
+
 }
 
 
+
+
 export default function AnotherPage() {
-    const initialTodos=[
-        {
-            name:'test',
-            age:21
-        },
-        {
-            name:'test',
-            age:21
-        },
-        {
-            name:'test',
-            age:21
-        },
-        {
-            name:'test',
-            age:21
-        },
+    const [todos,setTodos]=useState([]);
+    const [isTodosLoaded,setIsTodosLoaded] = useState(false)
 
-    ];
 
-    const [todos,setTodos]=useState("");
     const fetchTodos=()=>{
         // handling a promise
         axios.get("https://jsonplaceholder.typicode.com/todos")
             .then(getResponse=>{
-                setTodos(getResponse.data);
+                setTodos(getResponse.data)
+                setIsTodosLoaded(true)
             }).catch(error=>{
                 // catching exceptions from promise
-                console.error(error);
+                setIsTodosLoaded(true)
+                console.error(error)
             }
         );
     }
@@ -120,13 +89,10 @@ export default function AnotherPage() {
         fetchTodos();
     },[]); 
 
-
-    
-
     return (
         <>  
-            {/* <button className='bg-green-700 rounded-lg px-1' onClick={fetchTodos}>click me</button> */}
-            <RenderTable todos={todos}/>
+            {!isTodosLoaded ?  <Spinner/> :   <RenderTable todos={todos}/> }
+
         </>
     )
 }
