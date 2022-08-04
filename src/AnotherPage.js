@@ -1,7 +1,8 @@
-import React ,{useState} from 'react'
+import React ,{useState,useEffect} from 'react'
 import axios from 'axios';
+import loadingGif from "./gifs/loading.gif"
 
-export function PerObjectTable({renderObject}){                             // the power of reusable components
+/*export function PerObjectTable({renderObject}){                             // the power of reusable components
     var listAllItems=[];
     var objectAttributeCount=Object.keys(renderObject||{}).length;          // calculate it once so it would be quicker
     Object.keys(renderObject||{}).forEach(element=>{
@@ -14,13 +15,15 @@ export function PerObjectTable({renderObject}){                             // t
             {listAllItems}
         </div>
     );
-}
+}*/
 
-export function ListInTable({arrayOfObjects}){                              // here we're assuming that all the objects inside the array have the same attributes
+
+/*export function ListInTable({arrayOfObjects}){                              // here we're assuming that all the objects inside the array have the same attributes
     var tableFirstRow={};                                                   // just a super empty object
     Object.keys((arrayOfObjects||{})[0]||{}).forEach(element=>{             // this should just return an array of all the keys represented in the object
         tableFirstRow[element]=element;                                     // creating an object listing all the key names
     });
+
     var listAllItems=[];
     var finalArrayOfObjects=[tableFirstRow];
     finalArrayOfObjects.concat(arrayOfObjects).forEach(element=>{
@@ -31,14 +34,54 @@ export function ListInTable({arrayOfObjects}){                              // h
             {listAllItems}
         </>
     );
+}*/
+
+
+export function RenderTable({todos}){
+
+    if(todos==="")
+        return(
+            <>
+                <img src={loadingGif} alt="" style={{width:'25px'}}/>
+                <p>sorry i didnt find any other gif without a background </p>
+                <p> it would have been much better if it was at the center !!</p>
+            </>
+        );
+
+    const getBadge =(isCompleted)=>{
+        if (typeof (isCompleted) === "boolean"){
+            if (isCompleted)
+                return (<div className={"p-1 text-sm rounded-full mx-2 bg-green-50 text-green-500 border border-green-500"}> Completed </div>)
+            else
+                return (<div className={"p-1 text-sm rounded-full mx-2 bg-red-50 text-red-500 border border-red-500"}>Not Completed</div>)
+        }
+       return isCompleted
+    }
+
+
+    return(
+        <table className="table-auto">
+            <thead>
+            <tr className={"border border-b"}>
+                {Object.keys(todos[0]).map((attribute,index)=><th key={index} className={"border border-r"}>{attribute}</th>)}
+            </tr>
+            </thead>
+            <tbody>
+            {todos.map((todo,index)=>
+                <tr key={index}>
+                    {Object.keys(todo).map((element, index)=><td key={index} className={"text-center"} >
+                        {typeof (todo[element]) === 'boolean' ? getBadge(todo[element]) : todo[element] }
+                    </td>)}
+                </tr>
+            )}
+            </tbody>
+        </table>
+    );
 }
 
 
 export default function AnotherPage() {
-
-    var finalTable=[];
-
-    var testObjectList=[
+    const initialTodos=[
         {
             name:'test',
             age:21
@@ -58,19 +101,32 @@ export default function AnotherPage() {
 
     ];
 
-    const [listOfObjects,updateListOfObjects]=useState(testObjectList);
+    const [todos,setTodos]=useState("");
+    const fetchTodos=()=>{
+        // handling a promise
+        axios.get("https://jsonplaceholder.typicode.com/todos")
+            .then(getResponse=>{
+                setTodos(getResponse.data);
+            }).catch(error=>{
+                // catching exceptions from promise
+                console.error(error);
+            }
+        );
+    }
+
+
+    // passing an empty array so it would run only once as the app starts
+    useEffect(()=>{
+        fetchTodos();
+    },[]); 
+
+
     
+
     return (
         <>  
-            <button className='bg-green-700 rounded-lg px-1' onClick={()=>{
-                axios.get("https://jsonplaceholder.typicode.com/todos")         // handling a promise
-                .then(getResponse=>{ 
-                    updateListOfObjects(getResponse.data);
-                }).catch(error=>{                                               // catching exceptions from promise
-                    console.error(error);
-                });
-            }}>click me</button>    
-            <ListInTable arrayOfObjects={listOfObjects}/> 
+            {/* <button className='bg-green-700 rounded-lg px-1' onClick={fetchTodos}>click me</button> */}
+            <RenderTable todos={todos}/>
         </>
     )
 }
