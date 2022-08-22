@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import AnotherPage from './AnotherPage';
 import MainApp from './MainApp';
 import Layout from './layouts/Layout';
+import TailwindResponsive from './TailwindResponsive'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route index element={<MainApp />} />
           <Route path="home" element={<MainApp />} />
           <Route path="another-page" element={<AnotherPage />} />
+          <Route path="responsive-design" element={<TailwindResponsive />} />
           <Route path="*" element={<MainApp />} />
         </Route>
         
